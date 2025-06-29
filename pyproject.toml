@@ -1,0 +1,22 @@
+[project]
+name = "scratch"
+version = "0.0.1"
+description = "scratch for cython wrapping cases"
+readme = "README.md"
+authors = [{ name = "shakfu", email = "shakfu@example.com" }]
+requires-python = ">=3.13"
+dependencies = []
+
+[tool.scikit-build]
+ninja.make-fallback = false
+
+[build-system]
+build-backend = "scikit_build_core.build"
+requires = ["scikit-build-core", "cython"]
+
+[dependency-groups]
+dev = ["pytest>=8.4.1"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]

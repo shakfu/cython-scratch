@@ -1,2 +1,3 @@
 # cython-scratch
-A repo for throwaway demos of cython examples, techniques, etc.
+
+A repo for throwaway tests, demos of cython examples, techniques, etc.
