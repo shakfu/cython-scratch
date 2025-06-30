@@ -17,3 +17,18 @@ cdef extern from "queue.h":
     QueueValue queue_peek_tail(Queue* queue)
 
     bint queue_is_empty(Queue* queue)
+
+
+cdef extern from "pad.h":
+
+    ctypedef struct foo:
+        pass
+
+    ctypedef struct myStruct:
+        int field1
+        int field2
+        foo* field3
+
+    myStruct* create_mystruct()
+
+    void free_mystruct(myStruct* ptr)

@@ -46,6 +46,7 @@ cdef class PyQueue:
     5
     """
     cdef Queue* _c_queue
+
     def __cinit__(self):
         self._c_queue = queue_new()
         if self._c_queue is NULL:
@@ -91,7 +92,6 @@ cdef class PyQueue:
         return value
 
 
-
     cpdef int pop(self) except? -1:
         if queue_is_empty(self._c_queue):
             raise IndexError("Queue is empty")
@@ -99,4 +99,39 @@ cdef class PyQueue:
 
     def __bool__(self):
         return not queue_is_empty(self._c_queue)
+
+
+
+cdef class FooWrapper:
+    cdef foo* _ptr
+
+    def __cinit__(self):
+        self._ptr  = NULL
+    
+    @staticmethod
+    cdef FooWrapper from_ptr(foo* ptr):
+        cdef FooWrapper wrapper = FooWrapper.__new__(FooWrapper)
+        wrapper._ptr = ptr
+        return wrapper
+
+
+cdef class MyStruct:
+    cdef myStruct* _ptr
+
+    def __cinit__(self):
+        self._ptr = create_mystruct()
+
+    def __dealloc__(self):
+        if self._ptr is not NULL:
+            free_mystruct(self._ptr)
+
+    def to_dict(self):
+      return {'field1': self._ptr.field1,
+              'field2': self._ptr.field2,
+              'field3': FooWrapper.from_ptr(self._ptr.field3)  # or an int if opaque
+             }
+
+
+
+
 
