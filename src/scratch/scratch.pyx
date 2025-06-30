@@ -118,7 +118,7 @@ cdef class FooWrapper:
 
 cdef class Style:
     cdef mu_Style* ptr
-    cdef bint _owner
+    cdef bint owner
 
     def __cinit__(self):
         self.ptr = NULL
@@ -170,6 +170,10 @@ cdef class MyStruct:
     def __dealloc__(self):
         if self._ptr is not NULL:
             free_mystruct(self._ptr)
+
+    @property
+    def style(self) -> Style:
+        return Style.from_ptr(<mu_Style*>self._ptr.style)
 
     def to_dict(self):
       return {'field1': self._ptr.field1,
