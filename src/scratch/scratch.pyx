@@ -115,6 +115,52 @@ cdef class FooWrapper:
         return wrapper
 
 
+
+cdef class Style:
+    cdef mu_Style* ptr
+    cdef bint _owner
+
+    def __cinit__(self):
+        self.ptr = NULL
+        self.owner = False
+
+    def __dealloc__(self):
+        # De-allocate if not null and flag is set
+        if self.ptr is not NULL and self.owner is True:
+            free(self.ptr)
+            self.ptr = NULL
+
+    def __init__(self):
+        # Prevent accidental instantiation from normal Python code
+        # since we cannot pass a struct pointer into a Python constructor.
+        raise TypeError("This class cannot be instantiated directly.")
+
+    @staticmethod
+    cdef Style from_ptr(mu_Style* ptr, bint owner=False):
+        cdef Style wrapper = Style.__new__(Style)
+        wrapper.ptr = ptr
+        wrapper.owner = owner
+        return wrapper
+
+    @staticmethod
+    cdef Style new():
+        cdef mu_Style* _ptr = <mu_Style*>malloc(sizeof(mu_Style))
+        if _ptr is NULL:
+            raise MemoryError("Failed to allocate Style")
+        memset(_ptr, 0, sizeof(mu_Style))
+        return Style.from_ptr(_ptr, owner=True)
+    
+    @property
+    def padding(self) -> int:
+        return self.ptr.padding
+    
+    @padding.setter
+    def padding(self, int value):
+        self.ptr.padding = value
+
+
+
+
 cdef class MyStruct:
     cdef myStruct* _ptr
 
@@ -128,10 +174,7 @@ cdef class MyStruct:
     def to_dict(self):
       return {'field1': self._ptr.field1,
               'field2': self._ptr.field2,
-              'field3': FooWrapper.from_ptr(self._ptr.field3)  # or an int if opaque
+              'field3': FooWrapper.from_ptr(self._ptr.field3),  # or an int if opaque
+              'style': Style.from_ptr(self._ptr.style),
              }
-
-
-
-
 

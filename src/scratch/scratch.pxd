@@ -24,11 +24,24 @@ cdef extern from "pad.h":
     ctypedef struct foo:
         pass
 
+
+    ctypedef struct mu_Style:
+        void* hole
+        int padding
+        int spacing
+        int indent
+        int title_height
+        int scrollbar_size
+        int thumb_size
+
+
     ctypedef struct myStruct:
         int field1
         int field2
         foo* field3
+        mu_Style* style
 
     myStruct* create_mystruct()
 
     void free_mystruct(myStruct* ptr)
+
