@@ -25,7 +25,7 @@ cdef extern from "pad.h":
         pass
 
 
-    ctypedef struct mu_Style:
+    ctypedef struct my_Style:
         void* hole
         int padding
         int spacing
@@ -39,9 +39,36 @@ cdef extern from "pad.h":
         int field1
         int field2
         foo* field3
-        mu_Style* style
+        my_Style* style
 
     myStruct* create_mystruct()
 
     void free_mystruct(myStruct* ptr)
 
+
+   # Forward declarations
+    ctypedef struct mu_Context: pass
+    ctypedef void* mu_Font
+
+
+    # Style struct
+    ctypedef struct mu_Style:
+        # mu_Font font
+        # mu_Vec2 size
+        int padding
+        # int spacing
+        # int indent
+        # int title_height
+        # int scrollbar_size
+        # int thumb_size
+        # mu_Color colors[MU_COLOR_MAX]
+
+
+    # Main Context struct
+    ctypedef struct mu_Context:
+        mu_Style _style
+        mu_Style* style
+
+
+    # Core functions
+    void mu_init(mu_Context* ctx)
