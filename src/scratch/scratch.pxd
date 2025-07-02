@@ -47,7 +47,7 @@ cdef extern from "pad.h":
 
 
    # Forward declarations
-    ctypedef struct mu_Context: pass
+    # ctypedef struct mu_Context: pass #THIS CAUSE STYLE ptr to be returnable!
     ctypedef void* mu_Font
 
 

@@ -265,7 +265,7 @@ cdef class Context:
         mu_init(_ptr)
         return Context.from_ptr(_ptr, owner=True)
 
-    # @property
-    # def style(self) -> Style:
-    #     return Style.from_ptr(<mu_Style*>self.ptr.style)
+    @property
+    def style(self) -> Style:
+        return Style.from_ptr(<mu_Style*>self.ptr.style)
 
