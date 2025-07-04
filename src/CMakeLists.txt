@@ -19,7 +19,6 @@ python_add_library(
     scratch
     MODULE
     ${CMAKE_CURRENT_SOURCE_DIR}/scratch/queue.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/scratch/pad.c
     ${CMAKE_BINARY_DIR}/scratch.c
     WITH_SOABI
 )
@@ -29,10 +28,3 @@ target_include_directories(
     PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/scratch
 )
-
-# target_link_libraries(
-#     scratch
-#     PUBLIC
-    
-# )
-
