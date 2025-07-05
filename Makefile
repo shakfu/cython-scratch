@@ -3,16 +3,13 @@
 all: build
 
 
-build: clean
-	@mkdir -p build && cd build && \
-		cmake .. && \
-		cmake --build . --config Release
+build:
+	@make -C scratch
+	@make -C forward_typedef
+	@make -C queue
 
 clean:
-	@rm -rf build dist
-	@rm -rf src/scratch/scratch.*.so
-	@find . -type d -name __pycache__ -exec rm -rf {} \; -prune
-	@find . -type d -path ".*_cache"  -exec rm -rf {} \; -prune
+	@make -C scratch clean
+	@make -C forward_typedef clean
+	@make -C queue clean
 
-test:
-	@uv run pytest

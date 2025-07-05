@@ -1,5 +1,4 @@
 
-
 cdef extern from "queue.h":
     ctypedef struct Queue:
         pass
@@ -17,4 +16,3 @@ cdef extern from "queue.h":
     QueueValue queue_peek_tail(Queue* queue)
 
     bint queue_is_empty(Queue* queue)
-

@@ -18,7 +18,6 @@ add_custom_command(
 python_add_library(
     scratch
     MODULE
-    ${CMAKE_CURRENT_SOURCE_DIR}/scratch/queue.c
     ${CMAKE_BINARY_DIR}/scratch.c
     WITH_SOABI
 )
