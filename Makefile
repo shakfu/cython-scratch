@@ -10,6 +10,7 @@ build:
 	@make -C callback1
 	@make -C callback2
 	@make -C callback3
+	@make -C callback4
 
 clean:
 	@make -C scratch clean
@@ -18,3 +19,4 @@ clean:
 	@make -C callback1 clean
 	@make -C callback2 clean
 	@make -C callback3 clean
+	@make -C callback4 clean

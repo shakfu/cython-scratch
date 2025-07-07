@@ -1,5 +1,5 @@
 from libc.stdlib cimport malloc, free
-from libc.string cimport memset
+
 
 cdef extern from *:
     """
@@ -23,7 +23,7 @@ cdef extern from *:
     """
 
     ctypedef int (*c_callback_func)(int data, void* user_data)
-    
+
     ctypedef struct mystruct:
         c_callback_func callback
         void* user_data
@@ -33,7 +33,7 @@ cdef extern from *:
     int call_callback(mystruct* x, c_callback_func func, int data, void* user_data)
 
 
- # Example: A C-level trampoline function to call a Python callback
+# Example: A C-level trampoline function to call a Python callback
 cdef int c_callback_wrapper(int data, void* user_data) noexcept:
     python_callback = <object>user_data
     return python_callback(data)
@@ -56,7 +56,3 @@ cdef class CallbackDemo2:
 
     def call(self, int data, object python_func) -> int:
         return call_callback(self.ptr, self.ptr.callback, data, <void*>python_func)
-
-
-
-

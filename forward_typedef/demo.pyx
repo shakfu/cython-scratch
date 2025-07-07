@@ -15,8 +15,7 @@ cdef extern from *:
     };
     """
 
-    # >>> Uncommenting this causes lots of errors
-    # ctypedef struct t_context: pass
+    ctypedef struct t_context
 
     ctypedef struct t_style:
         int padding
@@ -24,7 +23,6 @@ cdef extern from *:
     ctypedef struct t_context:
         int frame
         t_style* style
-
 
 
 cdef class Style:
@@ -58,15 +56,14 @@ cdef class Style:
             raise MemoryError("Failed to allocate Style")
         memset(_ptr, 0, sizeof(t_style))
         return Style.from_ptr(_ptr, owner=True)
-    
+
     @property
     def padding(self) -> int:
         return self.ptr.padding
-    
+
     @padding.setter
     def padding(self, int value):
         self.ptr.padding = value
-
 
 
 cdef class Context:
@@ -92,7 +89,7 @@ cdef class Context:
         self.ptr.style = <t_style*>malloc(sizeof(t_style))
         if self.ptr.style is NULL:
             raise MemoryError("Failed to allocate context.style")
-        self.owner = True            
+        self.owner = True
 
     @staticmethod
     cdef Context from_ptr(t_context* ptr, bint owner=False):
@@ -111,9 +108,3 @@ cdef class Context:
     @property
     def style(self) -> Style:
         return Style.from_ptr(<t_style*>self.ptr.style)
-
-    @property
-    def style(self) -> Style:
-        return Style.from_ptr(<t_style*>self.ptr.style)
-
-

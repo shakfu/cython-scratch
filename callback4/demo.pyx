@@ -1,5 +1,4 @@
 from libc.stdlib cimport malloc, free
-from libc.string cimport memset
 
 
 cdef extern from "Python.h":
@@ -15,12 +14,6 @@ cdef extern from *:
         void* user_data;
     } t_callback;
 
-    void register_callback(t_callback* x, c_callback_func func, void* user_data)
-    {
-        x->callback = func;
-        x->user_data = user_data;
-    }
-
     int call_callback(t_callback* x, c_callback_func func, int data, void* user_data)
     {
         return func(data, user_data);
@@ -28,17 +21,15 @@ cdef extern from *:
     """
 
     ctypedef int (*c_callback_func)(int data, void* user_data)
-    
+
     ctypedef struct t_callback:
         c_callback_func callback
         void* user_data
 
-    void register_callback(t_callback*, c_callback_func func, void* user_data)
-
     int call_callback(t_callback* x, c_callback_func func, int data, void* user_data)
 
 
- # Example: A C-level trampoline function to call a Python callback
+# Example: A C-level trampoline function to call a Python callback
 cdef int c_callback_wrapper(int data, void* user_data) noexcept:
     python_callback = <object>user_data
     return python_callback(data)
@@ -70,12 +61,9 @@ cdef class Callback:
     def register_pycallback(self, object python_func):
         if self.ptr.user_data is not NULL:
             Py_DECREF(<object>self.ptr.user_data)
-        Py_INCREF(python_func) # <- this is KEY!
+        Py_INCREF(python_func)  # <- this is KEY!
         self.ptr.user_data = <void*>python_func
 
     def call(self, int data) -> int:
-        return call_callback(self.ptr, self.ptr.callback, data, <void*>self.ptr.user_data)
-
-
-
-
+        return call_callback(
+            self.ptr, self.ptr.callback, data, <void*>self.ptr.user_data)
